@@ -77,3 +77,69 @@
 >
 >--pipe-to starts Elixir detached from console (Unix-like only).
 >It will attempt to create PIPEDIR and LOGDIR if they don't exist.
+
+
+### Start Coding
+>iex -S mix in terminal is the way to go. It runs mix before CLI.
+>
+>after you make changes, you can either:
+>do the tedious way:
+>c "lib/dictionary.ex" --> compiles the app to the exact location
+>
+>OR
+>
+>do the slightly less tedious way:
+>r Dictionary  --> recompiles the app
+
+You can group a chunk of Elixir code between the keywords do and end. This is used in our example to delineate the body of our module, and the bodies of the function it contains:
+
+>defmodule Dictionary do
+>
+>  --> body of module . . .
+>
+>  def hello() do
+>
+>    --> body of function . . .
+>
+>  end
+>
+>end
+
+
+
+
+
+-modules in Elixir are defined using defmodule followed by the module name and a do/end block.
+
+-functions are defined using def followed by the function name, any parameters, and the body in a do/end block.
+
+-module names must be an Elixir atom. Conventionally we use Capitalized words (MyFirstModule). There's a section about atoms later in this chapter.
+
+-function names are either names or one of the Elixir operators. Names must start with a lowercase letter or underscore, and may contain letters, digits, and underscores. The name may end with an exclamation point or a question mark.
+
+-IO.puts writes a string to standard output.
+
+
+## Start Writing the Dictionary
+>File.read!("assets/words.txt") --> fn that lists all the words in the chosen directory
+>
+>File. + [TAB] -> shows all fns for File
+>
+>-Created an assets directory in our project and download words.txt into it.
+>
+>-Went into iex, and typed File.↦ (where ↦ represents the tab character). Tab completion displayed the list of File functions, and we use h File.read to get help.
+>
+>-We chose File.read! to read the wordlist and String.split to break it into a list of words.
+>
+>-We combined the two into a function, Dictionary.word_list, and played with it in iex.
+>
+>-We also saw examples of tuples and regular expression literals. We'll look at these in more detail in the next chapter.
+>
+>
+>
+>
+>
+>
+>
+>
+>
