@@ -125,17 +125,49 @@ You can group a chunk of Elixir code between the keywords do and end. This is us
 >
 >File. + [TAB] -> shows all fns for File
 >
->-Created an assets directory in our project and download words.txt into it.
+>Created an assets directory in our project and download words.txt into it.
 >
->-Went into iex, and typed File.↦ (where ↦ represents the tab character). Tab completion displayed the list of File functions, and we use h File.read to get help.
+>Went into iex, and typed File.↦ (where ↦ represents the tab character). Tab completion displayed the list of File functions, and we use h File.read to get help.
 >
->-We chose File.read! to read the wordlist and String.split to break it into a list of words.
+>We chose File.read! to read the wordlist and String.split to break it into a list of words.
 >
->-We combined the two into a function, Dictionary.word_list, and played with it in iex.
+>We combined the two into a function, Dictionary.word_list, and played with it in iex.
 >
->-We also saw examples of tuples and regular expression literals. We'll look at these in more detail in the next chapter.
+>We also saw examples of tuples and regular expression literals. We'll look at these in more detail in the next chapter.
 >
+>Strings Can Be Called Binaries
 >
+>Erlang uses sequences of bytes to represent strings. It considers this just another byte stream—binary data—and so calls these values binaries. This convention carries forward into Elixir, so don't be surprised to see the word binary where you were expecting string.
+>
+>Function Names Ending With An Exclamation Mark
+Often Elixir has two variants of a function, such as File.read and File.read!. Most of the time this means that the plain version will return an error status on failure, and the version with the shriek will raise an exception. This rule isn't universal, though, so check the documentation.
+>
+>Functions Are Identified By Name/Arity
+>
+>Elixir functions have a name (by convention lowercase letters, digits, and underscores, with a possible trailing ? or !). They also have an arity: the number of parameters they take.
+>
+>Both the name and the arity are required to identify a particular function. We write the combination as name/arity: String.split/1, String.split/2 and so on.
+>
+>Values Are Not Objects
+>In an object-oriented language, an object is typically associated with a class or a prototype. That class defines the methods that are supported by the object. In Ruby, for example, we could split a string using:
+>
+>"123\n456\n789\n".split(/\n/)
+>Values in Elixir have a type, but the type does not attach functions to those values. Instead, you pass the value as a parameter to the appropriate function:
+>
+>String.split("123\n456\n789\n", ~r/\n/)
+When I first started using Elixir, I hated this. It seemed as if I had lost the fact that (say) strings had string-like behaviors.
+>
+>But the more I coded in Elixir, the more I came to realize that this association between a value and a set of methods actually represented a very strong form of coupling, and that this coupling had made my OO code brittle.
+>
+>It takes getting used to, but I think you'll come to the same conclusion.
+>
+>Functions Return The Last Expression Evaluated
+>Functions exit by falling out the bottom—there is no explicit return keyword.
+>
+>Finding Functions
+>Although types don't have associated functions, you'll find that the libraries in Elixir use naming conventions to make finding appropriate functions easier. For example, a string will typically be manipulated by functions in the String module (String.split and so on). Similarly, lists are manipulated by functions in the List module.
+>
+>Sometimes a set of functions applies to values of multiple types. For example, lists and maps are both collections of values—they can be enumerated. Functions to do with this shared behavior are in their own module (in this case Enum).
 >
 >
 >
