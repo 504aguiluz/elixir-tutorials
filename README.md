@@ -173,5 +173,30 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >Module Attributes (i.e., @word_list)
 >- compiles and initializes variable from file once compiled, but after just uses variable to save having to recompile the source file. Super powerful
 >
+>Pipeline operator: |>
+> takes expression to its left and injects it as a parameter to the fn on its right
 >
 >
+## INTEGERS AND FLOATS
+> integers greater than 999 use _ instead of , to group
+>e.g., 120,000 -> 120_000
+>
+>Also:
+>x -> hexidecimal
+>o -> octal
+>b -> binary
+
+>iex> 8/3
+>2.6666666666666665
+
+### DIV -> returns truncated int result
+>iex> div(8, 3)
+>2
+### TRUNC -> returns truncated int result
+>iex> trunc(8/3) 
+>2
+### ROUND -> returns rounded int result
+>iex> round(8/3)
+>3
+
+###
