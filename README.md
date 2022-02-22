@@ -177,6 +177,9 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 > takes expression to its left and injects it as a parameter to the fn on its right
 >
 >
+
+
+# DATA TYPES
 ## INTEGERS AND FLOATS
 > integers greater than 999 use _ instead of , to group
 >e.g., 120,000 -> 120_000
@@ -199,4 +202,40 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >iex> round(8/3)
 >3
 
-###
+### String.to_integer
+> converts string to integer
+
+### Atoms
+> atoms are indivisible pieces of data
+> is it like binding data?
+
+> The first way to create an atom is to prefix a name or an operator with a colon.
+> examples ->
+> 1.)
+> :cat   :puppy_dog    :>=
+> 2.)
+>:"cat-dog"   :"now is the time"   :"!@$%^&UIO"
+>3.)
+> iex> a = 99
+> 99
+> iex> :"next-number: #{a+1}"
+> :"next-number: 100"
+
+>The second way to create an atom is to use a name that starts with an uppercase letter.
+> iex> is_atom(Dictionary)
+> true
+> iex> Dictionary == :"Elixir.Dictionary"
+> true
+
+### Ranges
+> First, they are used with the in operator to check that an integer falls between two bounds:
+> iex> a = 5..10
+> 5..10
+> iex> b = 8..3
+> 8..3
+> iex> 4 in a
+> false
+> iex> 4 in b
+> true
+> iex> for i <- b, do: i*3
+> [24, 21, 18, 15, 12, 9]
