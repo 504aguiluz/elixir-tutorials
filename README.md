@@ -170,8 +170,8 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >Sometimes a set of functions applies to values of multiple types. For example, lists and maps are both collections of values—they can be enumerated. Functions to do with this shared behavior are in their own module (in this case Enum).
 >
 >
->
->
+>Module Attributes (i.e., @word_list)
+>- compiles and initializes variable from file once compiled, but after just uses variable to save having to recompile the source file. Super powerful
 >
 >
 >
