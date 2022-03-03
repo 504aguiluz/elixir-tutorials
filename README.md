@@ -476,3 +476,43 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >{ :ok, file } = File.open("/etc/passwd")
 >If the open succeeds, the variable file will be bound to a handle for the file. If it fails, then the pattern match fails, and your code raises a MatchError. This is the Elixir way. "Fail early" is one of the keys to highly reliable code.
 >
+## Underscores in Pattern Matches
+>The special variable whose name is a single underscore is never bound by pattern matching—in effect it acts as a placeholder, useful when you want to match the structure of a value, but don't care about some of the values it contains.
+>
+>[ a, _, _ ]       # match a three element list (where each element is
+>                  # potentially different to the others) and
+>                  # associate the value of the first element with `a`
+>
+>[ a, _, a ]       # match a three element list where the first and
+>                  # last elements are the same, binding that value to `a`
+>
+>[ h | _ ]         # extract just the head of a list
+
+## Matching Using Variable Values
+>How could you use the value in a variable on the LHS of a pattern match? For example, could you do the following to match only tuples that start with 42?
+>
+>iex> first = 42
+>42
+>iex> { first, second } = { 42, 53 }
+>{ 42, 53 }
+>iex> first
+>42
+>Looks like it worked. But…
+>
+>iex> first = 42
+>42
+>iex> { first, second } = { 0, 1 }
+>{ 0, 1 }
+>iex> first
+>0
+>The match ignores the current value associated with first and rebinds it to the first element of the tuple. That's because all variables on the LHS of a match are unbound before the match is made.
+>
+>The solution is to use the pin operator, an uparrow, ^. Prefix a variable with an uparrow, and Elixir will not rebind its value:
+>
+>iex> first = 42
+>42
+>iex> { ^first, second } = { 42, 53 }
+>{ 42, 53 }
+>iex> { ^first, second } = { 0, 1 }
+>** (MatchError) no match of right hand side value: { 0, 1 }
+>✖
