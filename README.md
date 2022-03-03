@@ -258,3 +258,40 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >~w//	~W//	list of words
 ## Strings
 >An Elixir string is a sequence of Unicode codepoints. They look and behave much like strings in other languages, although they are immutable.
+>Backslash expansion and expression interpolation is enabled in double-quoted strings:
+>"Name:\t#{name}\nAge:\t#{ trunc(age) }"
+>To turn off these substitutions, use the sigil form with an upper case S as the type:
+>~S"Name:\t#{name}\nAge:\t#{ trunc(age) }"
+>The operator <> concatenates strings, and the functions in the String module manipulate them.
+
+## Regular Expression Literals
+>As we've already seen, an Elixir regular expression literal is written using the ~r sigil:
+>~r/name:\s*(\w+)/
+>The underlying regular expression engine is PCRE.
+>
+>The Regex module contains most of the functions that work with regular expressions. In addition the operator =~ can perform a regular expression match.
+>
+>iex> str = "once upon a time"
+>"once upon a time"
+>iex> str =~ ~r/u..n/
+>true
+>iex> str =~ ~r/u..m/
+>false
+
+>Time to explore the functions in the Regex module:
+>Write an expression that returns true if a string contains an a, followed by any character, then a c (so abc, and arc will return true, and ace will not).
+>Write an expression that takes a string and replaces every occurrence of cat with dog.
+>Do the same, but only replace the first occurrence.
+>Possible Solution
+>iex> re1 = ~r/a.c/
+>~r/a.c/
+>iex> "abc" =~ re1
+>true
+>iex> "arc" =~ re1
+>true
+>iex> "art" =~ re1
+>false
+>iex> "cats like catnip" |> String.replace(~r/cat/, "dog")
+>"dogs like dognip"
+>iex> "cats like catnip" |> String.replace(~r/cat/, "dog", global: false)
+>"dogs like catnip"
