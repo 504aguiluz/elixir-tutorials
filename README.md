@@ -206,8 +206,8 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 > converts string to integer
 
 ### Atoms
-> atoms are indivisible pieces of data
-> is it like binding data?
+> Atoms are constants that are used to name things. 
+>In a way they are just like strings—the difference is in the representation.
 
 > The first way to create an atom is to prefix a name or an operator with a colon.
 > examples ->
@@ -295,3 +295,23 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >"dogs like dognip"
 >iex> "cats like catnip" |> String.replace(~r/cat/, "dog", global: false)
 >"dogs like catnip"
+
+## Tuples
+>A tuple is a fixed-length collection of values. Back when you did geometry in school, you used tuples all the time to group things together: {x,y} and {x,y,z} are both tuples.
+>
+>Elixir's tuples serve the same function—they group things together. They're more flexible the tuples in math, though, because they can contain values of different types.
+>
+>Tuple literals are written as a list of expressions between braces:
+>
+>{ :ok, "wilma" }
+>{ :reply, destination, "rain with chance of hail" }
+>{ 1, 2, 3+4 }
+>Typically tuples are small (two or three elements). They are frequently used to pass flagged values to and from functions. For example, if successful, File.read returns the tuple:
+>
+>{ :ok, contents }
+>The first element is the atom :ok, and the second is the contents of the file.
+>
+>If instead the file could not be read, File.read would return:
+>
+>{ :error, reason }
+>where reason is an explanation of the failure.
