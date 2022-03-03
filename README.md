@@ -239,3 +239,22 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 > true
 > iex> for i <- b, do: i*3
 > [24, 21, 18, 15, 12, 9]
+## Sigils and Strings
+>A sigil is simply a notation for creating values from strings. In the regular expression example, the string was \n and the value created was the corresponding regular expression.
+>
+>All sigils start with the tilde character, ~. This is followed by a single letter, which determines the type of value to be generated. Next comes the string, between delimiters, and finally there may be some optional flags.
+>The delimiters can be:
+>~r/.../     ~r"..."     -r'...'     ~r|...|
+>~r<...>     ~r[...]     ~r(...)     ~r{...}
+>~r"""
+> :
+> :
+>"""
+>The sigils that come as part of Elixir are:
+>Expand	Literal	Meaning
+>~c//	~C//	list of character codes
+>~r//	~R//	regular expression
+>~s//	~S//	string
+>~w//	~W//	list of words
+## Strings
+>An Elixir string is a sequence of Unicode codepoints. They look and behave much like strings in other languages, although they are immutable.
