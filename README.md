@@ -516,3 +516,88 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >iex> { ^first, second } = { 0, 1 }
 >** (MatchError) no match of right hand side value: { 0, 1 }
 >✖
+
+## Functions Pattern Match Their Parameters
+>So far we've seen pattern matching in the context of the = operator. But pattern matching permeates Elixir. Later we'll look at pattern matching's role in message passing and conditional statements. In this section we'll look at the magic of functions.
+>
+>When you call a function, the arguments you pass are not simply assigned to the corresponding parameters in the function. Instead, each argument is pattern matched to its parameter.
+>
+>For example, here's a function that takes a two-element tuple:
+>
+>def func({ a, b }) do
+>  IO.puts "a = #{a}, b = #{b}"
+>end
+>If we call it with func({1, 2}), the pattern match will bind 1 to a and 2 to b.
+>
+>If we want to access both the components of the tuple and the tuple itself, we could write:
+>
+>def func(t = { a, b }) do
+>  IO.puts "a = #{a}, b = #{b}, is_tuple{t}"
+>end
+>This isn't special syntax. When the argument is matched to the parameter, it's as if we'd written
+>
+>t = { a, b } = { 1, 2 }
+>Two pattern matches take place, and three variables are bound.
+>
+>Constants In The Patterns
+>What does this function match?
+>
+>def read_file({ :ok, file }) do 
+>  ...
+>end
+>It will only get invoked if it is passed a two element tuple where the first element is :ok.
+>
+>Similarly, the following function will only be invoked when passed an :error tuple.
+>
+>def read_file({ :error, reason }) do 
+>  ...
+>end
+>Multiple Function Heads
+>Many languages support method overloading—you can have two or more implementations of the same function if the specification of their parameters is different.
+>
+>It's the same in Elixir—functions can be overloaded based on the patterns their parameters match.
+>
+>Let's take the two functions we just wrote:
+>
+>def read_file({ :ok, file }) do 
+>  file
+>  |> IO.read(:line)
+>end
+>
+>def read_file({ :error, reason }) do 
+>  Logger.error("File error: #{reason}")
+>  []
+>end
+>Remember that File.open returns a tuple containing either {:ok, file} or {:error, reason}. So let's use that fact in the following code:
+>
+>"my_file.txt"
+>|> File.open
+>|> read_file
+>We passed the value returned by File.open to our read_file function. Elixir chose which of the two function bodies to invoke by pattern matching this value against the parameters. If the file was opened successfully, the first body will be called. If not, it'll call the second body.
+>
+>Unconditional Win!
+>Look again at what we did here. First, we wrote a linear pipeline that transformed a filename into a collection of lines. The pipeline is not cluttered with conditional logic or error handling. It just states the transformation that is to happen.
+>
+>Then look at read_file. There are two implementations, depending on whether the File.open succeeded or not. But, again, we have no conditional logic.
+>
+>Pattern matching in parameter lists means we can take functions that would otherwise be a mess of nested conditional logic and rewrite them as a set of small, focused functions, each of which handles just one particular flow.
+>
+>This is a major win. It makes code easier to write, and easier to read. And code that is easier to read is easier to change. And that's what good design is.
+>
+>There's No Escaping the Man from Pisa
+>One last pattern matching example. The mathematical definition of Fibonacci numbers (groan) is
+>
+>
+>Here it is in Elixir, using pattern matching:
+>
+>defmodule Sequence do
+>
+>  def fib(0), do: 0
+>  def fib(1), do: 1
+>  def fib(n), do: fib(n-1) + fib(n-2)
+>
+>end
+>I know; this is not an efficient implementation. That's not the point. Instead, think about how pattern matching lets us write code that is identical to the formal definition, and without any conditionals.
+>
+>We're going to be using pattern matched function calls a lot in our code. As a taste of things to come, the next section looks at how lists and functions go together like projects and overruns.
+>
