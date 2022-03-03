@@ -397,3 +397,82 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >iex> 5 * multipliers.twice
 >10
 >In a map constant, once: 1 is the same as writing :once => 1. And if the map's keys are atoms, you can access the values using the map.key notation.
+
+# Pattern Matching
+## The Basics
+>Fire up an iex session. (Please)
+>
+>Type along with me:
+>
+>iex> a = 1
+>See? That was worth it.
+>
+>What did we just type? The chances are you'd say it was an assignment statement—we assign the value 1 to the variable a. And, indeed, that's what seemed to happen:
+>
+>iex> a + 1
+>2
+>But try this:
+>
+>iex> 1 = a
+>No error!
+>
+>Now try
+>
+>iex> 2 = a
+>** (MatchError) no match of right hand side value: 1
+>The secret is that = is not really an assignment operator. Instead, it is a little game that we let Elixir play with our code.
+>
+>The rules of this game are simple: Elixir has to make the left and right hand sides of the = the same. But, to make it challenging, the only tool Elixir has available is the ability to bind a variable to a value. And because that's not difficult enough, this variable binding can only happen on the left hand side (LHS) of the equals sign.
+>
+>Let's look again at the expression a = 1.
+>
+>At the start of the expression, all the variables on the LHS are marked as unbound. Elixir then says "what can I do to make the LHS and RHS equal?". The answer is to bind 1 to a.
+>
+>Now a has the value 1. When we write b = a, Elixir goes through the same process. b is unbound, and a is 1, so Elixir binds 1 to b.
+>
+>Then we write 1 = a. There are no unbound variables. But fortunately that doesn't matter, as the LHS and RHS are already equal.
+>
+>That explains why 2 = a raises an error. Again, there are no unbound variables, so Elixir has no freedom to change anything. The LHS (2) doesn't equal the RHS (1), and there's no way for Elixir to make them equal. It admits defeat with a no match error.
+>
+>Pattern Matching Works With Structured Data
+>Clearly, Elixir thought this game's too easy. Let's level up.
+>
+>{ a, b } = { "cat", "dog" }
+>The LHS and RHS are both two-element tuples. How can Elixir make them equal? By binding "cat" to a and "dog" to b. Go ahead and verify this in iex:
+>
+>iex> { a, b } = { "cat", "dog" }
+>{"cat", "dog"}
+>iex> a
+>"cat"
+>iex> b
+>"dog"
+>Now try something a little trickier. Type the following into iex:
+>
+>iex> { a, a } = { "cat", "dog" }
+>Did you get an error?
+>
+>iex> { a, a } = { "cat", "dog" }
+>** (MatchError) no match of right hand side value: {"cat", "dog"}
+>Pretend to be Elixir executing this code. We're trying to make the LHS and RHS equal. The first thing we do is bind "cat" to a. Now that it is bound, a cannot be changed for the rest of this expression. So now Elixir is trying to reconcile the second a with "dog". It can't—there's no way {a, a} can match a tuple that has different elements.
+>
+>Shape and Values
+>For a match to succeed, the LHS and RHS must have the same shape, and each value on the right must match the corresponding value on the left. If the thing on the left is an unbound variable, Elixir binds that variable to the value being matched.
+>
+>Elixir Won't Do Your Math Homework
+>You might be hoping that you could write:
+>
+>x*x -2*x + 1 = 0
+>and that Elixir would work out that x is 1.
+>
+>Sorry, but that ain't gonna happen. The LHS cannot contain any calculations or function calls.
+>
+>Pattern Matching and Expectations
+>Think about the function File.open/1. It returns a tuple containing either { :ok, file } or { :error, reason }.
+>
+>We'll see later how you can write code to handle both cases. But you often don't want to deal with the error case—if the file cannot be opened, the code should just stop.
+>
+>You'll see people expressing this by writing:
+>
+>{ :ok, file } = File.open("/etc/passwd")
+>If the open succeeds, the variable file will be bound to a handle for the file. If it fails, then the pattern match fails, and your code raises a MatchError. This is the Elixir way. "Fail early" is one of the keys to highly reliable code.
+>
