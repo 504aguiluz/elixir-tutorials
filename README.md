@@ -353,3 +353,46 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >Even though you built the lists as a series of head/tail pairs, IEx displayed the result as a simple list of values.
 >
 >That's a convention in Elixir. Rather than making you build lists the hard way, you can write them using the conventional comma-separated list of values. But never forget that nonempty lists always have a head, which is a value, and a tail, which is a list.
+
+
+** Maps
+>Some languages call them dictionaries, hashes, or associative arrays. Elixir calls them maps.
+>
+>iex> countries = %{ 
+>...> "BFA" => "Burkina Faso",
+>...> "BDI" => "Burundi",
+>...> "KHM" => "Cambodia",
+>...> "CMR" => "Cameroon",
+>...> "CAN" => "Canada",
+>...> }
+>%{"BDI" => "Burundi", "BFA" => "Burkina Faso", 
+>  "CAN" => "Canada",  "CMR" => "Cameroon", 
+>  "KHM" => "Cambodia"}
+>
+>iex> countries["BFA"]
+>"Burkina Faso"
+>
+>iex> countries["XXX"]
+>nil
+>
+>iex> countries[123]
+>nil
+>Maps are an unordered collection of key/value pairs. Both keys and values can be any Elixir type, and those types can be mixed within a map.
+>
+>As the example shows, map literals look like
+>
+>%{ key1 => value1, key2 => value2, . . . }
+>You use the functions in the Map and Enum modules to work with maps. In addition, Elixir provides the map[key] shortcut to return the value corresponding to key (or nil).
+>
+>When the Keys are Atoms
+>We often use maps as lookup tables, where the keys are all atoms. For those cases, Elixir has a shortcut syntax.
+>
+>iex> multipliers = %{ once: 1, twice: 2, thrice: 3 }
+>%{once: 1, thrice: 3, twice: 2}
+>
+>iex> 5 * multipliers[:twice]
+>10
+>
+>iex> 5 * multipliers.twice
+>10
+>In a map constant, once: 1 is the same as writing :once => 1. And if the map's keys are atoms, you can access the values using the map.key notation.
