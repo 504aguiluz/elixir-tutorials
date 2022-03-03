@@ -315,3 +315,41 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >
 >{ :error, reason }
 >where reason is an explanation of the failure.
+
+## Lists
+> LISTS ARE NOT ARRAYS! They are more like linked lists, actually. 
+>An array is a contiguous area of memory containing fixed size cells.
+
+>If you want to find the nth element in a array, you perform some simple address arithmetic:
+> a = [123, 456, 789]
+> a[2] = 789
+> Lists are a sequence of zero of more elements, one linked to the next.
+> To get to the third element of the list, you have to start at the first and follow the links.
+
+>However, lists have an extremely useful property. It is easy to add a new element at the head of a list, and equally easy to remove that first element.
+>
+>This property is reflected in the definition of a list:
+>
+>Definition: A list is either:
+>
+>the empty list, written [ ], or
+>a value followed by a list, written [ value | list ]
+>The value part of the definition is normally called the head of the list, and the rest is called the tail.
+>
+>Here's how we can build up a list, element by element:
+>
+>iex> empty = []
+>[]
+>
+>iex> list_3 = [ 3 | empty ]
+>[3]
+>
+>iex> list_2_3 = [ 2 | list_3 ]
+>[2, 3]
+>
+>iex> list_1_2_3 = [ 1 | list_2_3 ]
+>[1, 2, 3]
+>
+>Even though you built the lists as a series of head/tail pairs, IEx displayed the result as a simple list of values.
+>
+>That's a convention in Elixir. Rather than making you build lists the hard way, you can write them using the conventional comma-separated list of values. But never forget that nonempty lists always have a head, which is a value, and a tail, which is a list.
