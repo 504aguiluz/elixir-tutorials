@@ -601,3 +601,97 @@ When I first started using Elixir, I hated this. It seemed as if I had lost the 
 >
 >We're going to be using pattern matched function calls a lot in our code. As a taste of things to come, the next section looks at how lists and functions go together like projects and overruns.
 >
+
+## Pattern Matching, Lists, and Recursion
+>Why have a section on lists in a unit that's supposed to be about pattern matching?
+>
+>It's because the definition of an Elixir list is really just a pattern, and knowing that lets you manipulate lists with ease.
+>
+>It's so important that we'll go over it twice, once in a video, and once in the text.
+>
+>
+>
+
+>https://muse.ai/v/YAQhDqX
+>What We Saw
+>Just to refresh, a list is either:
+>
+>the empty list, or
+>a head and a tail, where the tail is a list.
+>The empty list looks like this: [ ]
+>
+>The list with a head h and a tail t looks like this: [ h | t ]
+>
+>The list containing the values 1 and 2 has a head of 1 and a tail which is another list. That second list has a head of 2 and tail which is the empty list. It looks like this:
+>
+>[ 1 | [ 2 | [] ] ]
+>A list containing 1, 2, and 3 looks like this:
+>
+>[ 1 | [ 2 | [ 3 | [] ] ] ]
+>This is valid Elixir syntax, but it's a pain in the butt to work with. We've already seen the shortcut syntax: [ 1, 2, 3 ]. Internally, Elixir converts this into the form using nested heads and tails.
+>
+>You can also combine notations: [ 1, 2, 3 | [ 4, 5 ] ] is the same as [ 1, 2, 3, 4, 5 ].
+>
+>So why all the gory detail? Because the way lists are built is also the way they are taken apart.
+>
+>Arbitrary Lists and Pattern Matching
+>We saw how the vertical bar operator builds lists. We can also it to take lists apart in patterns.
+>
+>iex> my_list
+>[ 1, 2, 3, 4 ]
+>iex> [ head | tail ] = [ 1, 2, 3, 4 ]
+>[ 1, 2, 3, 4 ]
+>iex> head
+>1
+>iex> tail
+>[ 2, 3, 4 ]
+>The pattern [ head | tail ] matches the head (first value) and the tail (the rest) of the list. The head must receive a value, so this pattern cannot match the empty list. The tail will always be a list, but it might be empty.
+>
+>You can have multiple head elements in the match:
+>
+>[ a, b | tail ]       # matches a list of two or more elements,
+>                      # putting the first into a, the second in b,
+>                      # and the rest as a list in tail
+>
+>[ a, a | tail ]       # matches a list where the first two elements
+>                      # are the same
+>
+>[ a | [ a | tail ] ]  # same as the previous example
+## Let's Write Some Code
+>Because lists are defined recursively, the functions that work on them also tend to be recursive. For example:
+>
+>the length of an empty list is zero
+>the length of any other list is 1 plus the length of the tail
+>Your Turn
+>
+>Open up an editor, and code along as we implement what follows.
+>
+>First we'll create a module to hold our code. All the functions that follow are defined inside this module.
+>
+>defmodule Lists do
+>
+>end
+>Our first specification of list length says "the length of an empty list is zero." Here's the code:
+>
+>def len( [] ), do: 0
+>Fire up iex on this module (I called mine lists.exs)
+>
+>$ iex lists.exs
+>
+>iex> Lists.len( [] )
+>0
+>iex> Lists.len( [ 1, 2, 3 ] )
+>** (FunctionClauseError) no function clause matching in Lists.len/1
+>    lists.exs:3: Lists.len([1, 2, 3])
+>That's not unexpected—we haven't handled nonempty lists yet. Remember the spec: "the length of any other list is 1 plus the length of the tail."
+>
+>def len([]), do: 0
+>def len([ _head | tail ]), do: 1 + len(tail)
+>Back in iex, recompile the module and try again:
+>
+>iex> Lists.len( [] )
+>0
+>iex> Lists.len( [ 1, 2, 3 ] )
+>3
+>The key thing here is the pattern that matches the nonempty list. It splits the remaining list into a head and a tail. The body of the function then adds 1 (for the head) to the length of the tail. (I used _head in the pattern because I don't actually use the head. Without the underscore, I'd get a compilation warning about an unused variable.)
+>
