@@ -20,10 +20,36 @@ defmodule HangmanImpleGameTest do
 
   end
 
-  test "word is all lowercase" do
-    game = Game.new_game("wombat")
+  test "state doesn't change if a game is won or lost" do
+    # this says if :won or :lost comes from state
+    for state <- [:won, :lost] do
+      game = Game.new_game("wombat")
 
-    assert String.downcase("wombat") == "wombat"
+      # setting state of game
+      game = Map.put(game, :game_state, state)
+      { new_game, _tally } = Game.make_move(game, "x")
+
+      assert new_game == game
+    end
+  end
+
+  test "a dublicate letter is reported" do
+    game = Game.new_game()
+    {game, _tally} = Game.make_move(game, "x")
+    assert game.game_state !== :already_used
+    {game, _tally} = Game.make_move(game, "y")
+    assert game.game_state !== :already_used
+    {game, _tally} = Game.make_move(game, "x")
+    assert game.game_state == :already_used
+
+  end
+
+  test "we record letters used" do
+    game = Game.new_game()
+    {game, _tally} = Game.make_move(game, "x")
+    {game, _tally} = Game.make_move(game, "y")
+    {game, _tally} = Game.make_move(game, "x")
+    assert MapSet.equal?(game.used, MapSet.new(["x", "y"]))
 
   end
 
