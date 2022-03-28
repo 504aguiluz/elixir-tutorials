@@ -1,8 +1,11 @@
 defmodule Hangman do
+  # Hangman API
 
-  @type state :: :initializing | :won | :list | :good_guess | :bad_guess | :already_used
-  @type game :: any
-  @type tally :: %{
+  # we can actually delete ", as:Game " and the alias will default to the string following the last period. so it would still alias to "Game"
+  alias Hangman.Impl.Game, as: Game
+  @type   state :: :initializing | :won | :list | :good_guess | :bad_guess | :already_used
+  @opaque game :: Game.t
+  @type   tally :: %{
     turns_left: integer,
     game_state: state,
     letters: list(String.t),
@@ -10,11 +13,11 @@ defmodule Hangman do
   }
 
   @spec new_game() :: game
-  def new_game do
-  end
+  # delegates fn call to a different module -> new_game() in game.ex
+  defdelegate new_game, to: Game
 
   @spec make_move(game, String.t) :: { game, tally }
-  def make_move do(_game, _guess) do
+  def make_move(_game, _guess) do
   end
 
 end
